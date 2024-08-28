@@ -24,4 +24,17 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'login' && to.name !== 'register' && !sessionStorage.getItem('token')) {
+    next({ name: 'login' })
+  }
+  if (to.name === 'login' && sessionStorage.getItem('token')) {
+    next({ name: 'home' })
+  }
+  if (to.name === 'register' && sessionStorage.getItem('token')) {
+    next({ name: 'home' })
+  }
+  next()
+})
+
 export default router
