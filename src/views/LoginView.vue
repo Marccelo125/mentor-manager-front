@@ -1,27 +1,61 @@
 <script setup lang="ts">
 import FormColComponent from '@/components/FormColComponent.vue'
+import OverlayComponent from '@/components/OverlayComponent.vue'
+import { login } from '@/services/api'
+import { ref } from 'vue'
+import router from '../router/index'
 
-async function handleSubmitForm() {}
+const email = ref<string>('')
+const password = ref<string>('')
+
+const loading = ref<boolean>(false)
+
+async function handleSubmitForm(email: string, password: string) {
+  loading.value = true
+  try {
+    const response = await login(email, password)
+    if (response) {
+      router.push({ name: 'home' })
+    }
+    loading.value = false
+  } catch (error) {
+    loading.value = false
+  }
+}
 </script>
 
 <script lang="ts">
 export default {
   data: () => ({
-    visible: false
+    visible: false,
+    rules: {
+      required: (value: string) => !!value || 'Campo obrigatório',
+      email: (value: string) => {
+        const pattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+        return pattern.test(value) || 'E-mail inválido'
+      },
+      min: (value: string) => value.length >= 4 || 'Valor inserido é muito curto.',
+      max: (value: string) => value.length <= 60 || 'Valor inserido é muito longo.'
+    }
   })
 }
 </script>
 
 <template>
+  <OverlayComponent v-if="loading">
+    <v-progress-circular :size="60" :width="8" color="white" indeterminate />
+  </OverlayComponent>
   <v-container class="d-flex justify-center align-items-center my-12" style="min-height: 80vh">
     <v-row class="bg-blue-lighten-5 rounded-xl">
       <v-col class="col-12 col-md-6">
         <div class="pa-12">
           <h1 class="text-blue-darken-1">Bem-vindo de volta!</h1>
-          <form @submit.prevent="handleSubmitForm">
+          <form @submit.prevent="handleSubmitForm(email, password)">
             <div class="text-subtitle-1 text-medium-emphasis">Email</div>
 
             <v-text-field
+              v-model="email"
+              :rules="[rules.required, rules.email]"
               density="compact"
               placeholder="Insira seu email"
               variant="outlined"
@@ -43,6 +77,8 @@ export default {
             </div>
 
             <v-text-field
+              v-model="password"
+              :rules="[rules.required, rules.min, rules.max]"
               :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
               :type="visible ? 'text' : 'password'"
               density="compact"
@@ -51,7 +87,14 @@ export default {
               @click:append-inner="visible = !visible"
             ></v-text-field>
 
-            <v-btn class="mb-8 bg-blue-darken-1" color="white" size="large" variant="tonal" block>
+            <v-btn
+              type="submit"
+              class="mb-8 bg-blue-darken-1"
+              color="white"
+              size="large"
+              variant="tonal"
+              block
+            >
               Entrar
             </v-btn>
 
