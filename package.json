@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@ssibrahimbas/v-mask": "^1.0.0",
     "axios": "^1.7.5",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",
