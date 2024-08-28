@@ -1,4 +1,22 @@
+<script setup lang="ts">
+import { logout } from '@/services/api'
+import { ref } from 'vue'
+import OverlayComponent from '@/components/OverlayComponent.vue'
+import router from '../router/index'
+
+const loading = ref<boolean>(false)
+
+async function handleLogout() {
+  loading.value = true
+  await logout()
+  router.push({ name: 'login' })
+}
+</script>
+
 <template>
+  <OverlayComponent v-if="loading">
+    <v-progress-circular :size="60" :width="8" color="white" indeterminate />
+  </OverlayComponent>
   <header class="bg-white">
     <v-container fluid>
       <v-row class="d-flex align-center ga-2">
@@ -9,28 +27,19 @@
             src="https://www.growdev.com.br/assets/images/logo_growdev.png"
           ></v-img>
         </v-col>
-        <v-col
-          cols="12"
-          sm="6"
-          lg="6"
-          class="d-flex align-center justify-center justify-lg-end me-0 me-lg-10 ga-2"
-        >
-          <div>
-            <span>Seja bem vindo!</span>
-            <p class="font-weight-bold text-h6">Marcelo Duarte</p>
-          </div>
 
-          <div class="rounded-circle">
-            <v-img
-              :height="60"
-              :width="60"
-              rounded="circle"
-              cover
-              src="https://media.istockphoto.com/id/1059661424/photo/mature-mixed-race-business-man.jpg?s=612x612&w=0&k=20&c=UAVBeyoD_LkCh1MzVaWW1SR1iwK-VkPDXWMH2o2wL8M="
-            ></v-img>
-          </div>
+        <v-col class="d-flex justify-center justify-sm-end">
+          <v-btn color="red" class="text-capitalize" @click="handleLogout">Sair </v-btn>
         </v-col>
       </v-row>
     </v-container>
   </header>
 </template>
+
+<style scoped>
+.spinner-div {
+  position: absolute;
+  left: 46%;
+  top: 50%;
+}
+</style>
