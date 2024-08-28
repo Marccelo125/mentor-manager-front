@@ -10,13 +10,21 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+import '@mdi/font/css/materialdesignicons.css'
+
+// Importamos o plugin v-mask
+import VMask from '@ssibrahimbas/v-mask'
+
 // Components
 const vuetify = createVuetify({
   components,
   directives,
-  ssr: true
+  ssr: true,
+  icons: {
+    defaultSet: 'mdi'
+  }
 })
 
 const app = createApp(App)
 
-app.use(vuetify).use(router).mount('#app')
+app.use(vuetify).use(router).use(VMask).mount('#app')
