@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { newMentor } from '@/services/api'
+import { cpfFormat } from '@/services/cpfFormat'
+// import { verifyCpf } from '@/services/cpfVerify'
 import { ref } from 'vue'
 
 const name = ref<string>('')
@@ -14,14 +16,17 @@ async function handleSubmitForm() {
   try {
     loading.value = true
 
+    const formatedCpf = cpfFormat(cpf.value)
+
+    // TODO - Quando for usar o sistema fazer verificação de cpf
+    // const cpfValid = verifyCpf(formatedCpf)
+
     await newMentor(name.value, email.value, cpf.value)
 
     window.location.reload()
 
     loading.value = false
     dialogForm.value = false
-
-    return true
   } catch {
     alert('Não foi possível cadastrar o mentor!')
     loading.value = false
@@ -67,24 +72,33 @@ export default {
         <v-card title="Novo mentor">
           <v-card-text>
             <v-form ref="form">
+              <div class="text-subtitle-1 text-medium-emphasis">Nome</div>
+
               <v-text-field
                 v-model="name"
-                label="Nome"
+                variant="outlined"
+                placeholder="Insira seu nome"
                 :rules="[rules.required, rules.min, rules.max]"
                 class="mb-3"
               ></v-text-field>
 
+              <div class="text-subtitle-1 text-medium-emphasis">E-mail</div>
+
               <v-text-field
                 v-model="email"
-                label="E-mail"
+                variant="outlined"
+                placeholder="Insira seu email"
                 type="email"
                 :rules="[rules.required, rules.email]"
                 class="mb-3"
               ></v-text-field>
 
+              <div class="text-subtitle-1 text-medium-emphasis">CPF</div>
+
               <v-text-field
                 v-model="cpf"
-                label="CPF"
+                variant="outlined"
+                placeholder="Insira seu CPF"
                 :rules="[rules.required]"
                 v-mask="['###.###.###-##']"
                 class="mb-3"
