@@ -25,7 +25,6 @@ async function handleEditMentor(id: number) {
 async function handleDeleteMentor(id: number) {
   try {
     const response = await deleteMentor(id)
-    console.log('deletando...')
 
     if (response) {
       window.location.reload()
@@ -107,18 +106,20 @@ export default {
 
                     <v-text-field
                       v-model="editName"
-                      :value="mentor.name"
+                      :placeholder="mentor.name"
                       :rules="[rules.min, rules.max]"
                       class="mb-3"
+                      variant="outlined"
                     ></v-text-field>
 
                     <div class="text-subtitle-1 text-medium-emphasis">E-mail</div>
 
                     <v-text-field
                       v-model="editEmail"
-                      :value="mentor.email"
+                      :placeholder="mentor.email"
                       type="email"
                       :rules="[rules.email]"
+                      variant="outlined"
                       class="mb-3"
                     ></v-text-field>
 
@@ -126,9 +127,10 @@ export default {
 
                     <v-text-field
                       v-model="editCpf"
-                      :value="mentor.cpf"
+                      :placeholder="mentor.cpf"
                       v-mask="['###.###.###-##']"
                       class="mb-3"
+                      variant="outlined"
                     ></v-text-field>
 
                     <div class="d-flex justify-center flex-column ga-2">

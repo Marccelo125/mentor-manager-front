@@ -2,14 +2,13 @@
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import MentorFormComponent from '@/components/MentorFormComponent.vue'
 import MentorsTableComponent from '@/components/MentorsTableComponent.vue'
-import { doGet, doGetQuery } from '@/services/api'
 import type { MentorType } from '@/types/MentorType'
-
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { doGet } from '@/services/api'
 
 const search = ref<string>('')
+const mentorsAll = ref<MentorType[]>([])
 const mentors = ref<MentorType[]>([])
-
 const spinnerLoading = ref<boolean>(false)
 
 async function fetchMentors() {
@@ -19,19 +18,28 @@ async function fetchMentors() {
 
   if (response) {
     mentors.value = response
+    mentorsAll.value = response
   }
 
   spinnerLoading.value = false
 }
 
-async function fetchQuery(query: string) {
+async function fetchQuery() {
+  if (search.value.length === 0) {
+    mentors.value = mentorsAll.value
+    return
+  }
   spinnerLoading.value = true
 
-  const response = await doGetQuery(query)
-
-  if (response) {
-    mentors.value = response
-  }
+  mentors.value = computed(() => {
+    const query = search.value.toLowerCase()
+    return mentors.value.filter(
+      (mentor) =>
+        mentor.name.toLowerCase().includes(query) ||
+        mentor.cpf.includes(query) ||
+        mentor.email.toLowerCase().includes(query)
+    )
+  }).value
   spinnerLoading.value = false
 }
 onMounted(() => {
@@ -50,11 +58,9 @@ onMounted(() => {
             @update:model-value="fetchQuery(search)"
             placeholder="Pesquise por um mentor..."
             prepend-inner-icon="mdi-magnify"
-            label="Pesquisar"
             variant="solo"
             hide-details
             single-line
-            clearable
             flat
           ></v-text-field>
         </v-col>
