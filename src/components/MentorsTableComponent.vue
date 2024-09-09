@@ -95,9 +95,13 @@ export default {
 </script>
 
 <template>
-  <v-row max-width="100px" max-height="100px">
+  <v-row class="d-flex mx-12">
+    <v-col cols="12" class="d-flex d-md-none justify-center">
+      <p class="text-center font-weight-bold">Arraste a tabela para o lado para mais informações</p>
+    </v-col>
+
     <v-col cols="12" class="bg-white rounded-lg mt-2">
-      <v-table class="mx-12">
+      <v-table class="mx-0 mx-md-12">
         <thead>
           <tr>
             <th class="text-left">Nome</th>
@@ -112,20 +116,22 @@ export default {
             <td>{{ mentor.email }}</td>
             <td>{{ mentor.cpf }}</td>
             <td>
-              <button
-                class="bg-yellow-accent-3 pa-2 rounded font-weight-medium"
-                @click="editDialogForm[mentor.id] = true"
-              >
-                <v-icon icon="mdi mdi-pencil-box" color="dark" size="medium"></v-icon>
-                Editar
-              </button>
-              <button
-                class="bg-red-darken-3 ma-2 pa-2 rounded font-weight-medium"
-                @click="deleteDialog[mentor.id] = true"
-              >
-                <v-icon icon="mdi mdi-delete" color="white" size="medium"></v-icon>
-                Remover
-              </button>
+              <div class="d-flex ga-2">
+                <button
+                  class="bg-yellow-accent-3 pa-2 rounded font-weight-medium"
+                  @click="editDialogForm[mentor.id] = true"
+                >
+                  <v-icon icon="mdi mdi-pencil-box" color="dark" size="medium"></v-icon>
+                  Editar
+                </button>
+                <button
+                  class="bg-red-darken-3 pa-2 rounded font-weight-medium"
+                  @click="deleteDialog[mentor.id] = true"
+                >
+                  <v-icon icon="mdi mdi-delete" color="white" size="medium"></v-icon>
+                  Remover
+                </button>
+              </div>
             </td>
 
             <!-- EDIT MODAL -->
@@ -238,30 +244,32 @@ export default {
         </tbody>
       </v-table>
 
-      <div class="d-flex align-center justify-center ga-2 text-center my-2 pa-2 bg-grey-lighten-5">
-        <v-btn
-          v-for="page in mentors?.last_page"
-          :key="page"
-          class="rounded-lg color-blue"
-          @click="
-            changePage(
-              page,
-              mentors?.last_page,
-              `http://127.0.0.1:8000/api/mentors?page=${page}&per_page=${perPage}`
-            )
-          "
-          :disabled="page === mentors?.current_page"
-        >
-          {{ page }}
-        </v-btn>
-
-        <div class="d-flex align-center justify-center ml-8 pt-4">
+      <v-row class="align-center ga-2 text-center my-2 pa-2 bg-grey-lighten-5">
+        <v-col cols="12" md="8" class="d-flex flex-wrap justify-center ga-2">
+          <v-btn
+            v-for="page in mentors?.last_page"
+            :key="page"
+            class="rounded-lg color-blue"
+            @click="
+              changePage(
+                page,
+                mentors?.last_page,
+                `http://127.0.0.1:8000/api/mentors?page=${page}&per_page=${perPage}`
+              )
+            "
+            :disabled="page === mentors?.current_page"
+          >
+            {{ page }}
+          </v-btn>
+        </v-col>
+        <v-col cols="12" md="2" class="d-flex align-center justify-center">
           <v-text-field
             label="Mentores"
             v-model="perPage"
             prefix="Qnt."
             variant="outlined"
             placeholder="5"
+            max-width="100"
             @change="
               changePage(
                 currentPage,
@@ -270,8 +278,8 @@ export default {
               )
             "
           ></v-text-field>
-        </div>
-      </div>
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 </template>
