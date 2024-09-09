@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { cpfFormat } from './cpfFormat'
 import type { EditMentorType } from '@/types/EditMentorType'
+import type { PaginationType } from '@/types/PaginationType'
 
 const client = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/',
@@ -25,20 +26,20 @@ export async function doGetQuery(query: string) {
   }
 }
 
-export async function doGet(url: string) {
+export async function doGet(url: string): Promise<PaginationType | null> {
   try {
     const config = {
       headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
     }
 
-    const response = await client.get(url, config)
+    const apiResponse = await client.get(url, config)
 
-    const { data } = response.data
+    const { data } = apiResponse.data
 
     return data
   } catch (error) {
     console.log(error)
-    return []
+    return null
   }
 }
 
