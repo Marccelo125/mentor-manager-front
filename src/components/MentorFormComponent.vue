@@ -56,16 +56,16 @@ export default {
 </script>
 
 <template>
-  <v-col cols="12" sm="6" md="4" lg="3" class="d-flex justify-center mx-0">
+  <v-col cols="12" md="3" lg="2" class="d-flex justify-center justify-md-start">
     <v-dialog v-model="dialogForm" max-width="450">
       <template v-slot:activator="{ props: activatorNewMentor }">
         <v-btn
           v-bind="activatorNewMentor"
-          class="d-flex align-center justify-center rounded-lg pa-6"
+          class="d-flex rounded-lg pa-6"
           color="blue-lighten-1"
           text="Cadastrar mentor"
           variant="flat"
-        ></v-btn>
+        />
       </template>
 
       <template v-slot:default="{ isActive }">
