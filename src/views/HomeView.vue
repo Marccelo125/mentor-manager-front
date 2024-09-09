@@ -36,8 +36,8 @@ async function fetchQuery() {
   <HeaderComponent />
   <main>
     <v-container>
-      <v-row class="d-flex align-center justify-space-evenly">
-        <v-col cols="12" sm="6" md="8" lg="9" class="mx-0">
+      <v-row class="d-flex align-center justify-center">
+        <v-col cols="12" md="6" lg="8">
           <v-text-field
             v-model="search"
             @update:model-value="fetchQuery()"
