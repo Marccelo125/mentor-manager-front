@@ -45,11 +45,11 @@ export default {
   <OverlayComponent v-if="loading">
     <v-progress-circular :size="60" :width="8" color="white" indeterminate />
   </OverlayComponent>
-  <v-container class="d-flex justify-center align-items-center my-12" style="min-height: 80vh">
+  <v-container class="d-flex justify-center mt-12" style="min-height: 80vh">
     <v-row class="bg-blue-lighten-5 rounded-xl">
-      <v-col class="col-12 col-md-6">
-        <div class="pa-12">
-          <h1 class="text-blue-darken-1">Bem-vindo de volta!</h1>
+      <v-col cols="12" md="6" class="d-flex align-center justify-center">
+        <div class="d-flex flex-column w-75">
+          <h1 class="text-blue-darken-1 font-weight-bold text-h3">Bem-vindo de volta!</h1>
           <form @submit.prevent="handleSubmitForm(email, password)">
             <div class="text-subtitle-1 text-medium-emphasis">Email</div>
 
